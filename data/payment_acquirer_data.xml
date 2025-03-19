@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Payment Acquirer: Remita -->
+        <record id="payment_acquirer_remita" model="payment.acquirer">
+            <field name="name">Remita</field>
+            <field name="provider">remita</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="image_128" type="base64" file="payment_remita/static/description/icon.png"/>
+            <field name="description" type="html">
+                <p>
+                    A Nigerian payment gateway that offers a secure payment experience.
+                </p>
+            </field>
+            <field name="remita_merchant_id">dummy_merchant_id</field>
+            <field name="remita_api_key">dummy_api_key</field>
+            <field name="remita_service_type_id">dummy_service_type_id</field>
+            <field name="remita_mode">Test</field>
+        </record>
+
+        <!-- Payment Method: Remita -->
+        <record id="payment_method_remita" model="payment.method">
+            <field name="name">Remita</field>
+            <field name="code">remita</field>
+            <field name="payment_type">direct</field>
+        </record>
+    </data>
+</odoo>

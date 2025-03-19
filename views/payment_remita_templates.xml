@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_remita_form">
+        <div>
+            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+            <input type="hidden" name="reference" t-att-value="tx_values.get('reference')"/>
+            <input type="hidden" name="amount" t-att-value="tx_values.get('amount')"/>
+            <input type="hidden" name="currency" t-att-value="tx_values.get('currency')"/>
+            <input type="hidden" name="merchant_id" t-att-value="tx_values.get('merchant_id')"/>
+            <input type="hidden" name="service_type_id" t-att-value="tx_values.get('service_type_id')"/>
+            <input type="hidden" name="customer_email" t-att-value="tx_values.get('customer_email')"/>
+            <input type="hidden" name="customer_name" t-att-value="tx_values.get('customer_name')"/>
+            <input type="hidden" name="js_url" t-att-value="tx_values.get('js_url')"/>
+            <input type="hidden" name="payload" t-att-value="tx_values.get('payload')"/>
+        </div>
+        <script type="text/javascript">
+            (function() {
+                // Load Remita inline JS
+                var script = document.createElement('script');
+                script.src = document.querySelector('input[name="js_url"]').value;
+                script.async = true;
+                document.body.appendChild(script);
+                
+                // Initialize payment after JS is loaded
+                script.onload = function() {
+                    var payload = JSON.parse(document.querySelector('input[name="payload"]').value);
+                    
+                    var paymentConfig = {
+                        key: payload.hash, // This is the hash used as key
+                        customerId: payload.payerEmail,
+                        firstName: payload.payerName,
+                        lastName: '',
+                        email: payload.payerEmail,
+                        narration: payload.description,
+                        amount: payload.amount,
+                        merchantId: payload.merchantId,
+                        serviceTypeId: payload.serviceTypeId,
+                        orderId: payload.orderId,
+                        onSuccess: function (response) {
+                            console.log('Payment successful', response);
+                            // Redirect to return URL with response data
+                            var redirectUrl = payload.responseurl + 
+                                '?orderID=' + response.orderId + 
+                                '&RRR=' + response.RRR + 
+                                '&status=SUCCESS';
+                            window.location.href = redirectUrl;
+                        },
+                        onError: function (response) {
+                            console.log('Payment error', response);
+                            // Redirect with error status
+                            var redirectUrl = payload.responseurl + 
+                                '?orderID=' + payload.orderId + 
+                                '&status=FAILED';
+                            window.location.href = redirectUrl;
+                        },
+                        onClose: function () {
+                            console.log('Payment window closed');
+                            // Redirect with cancelled status
+                            var redirectUrl = payload.responseurl + 
+                                '?orderID=' + payload.orderId + 
+                                '&status=CANCELLED';
+                            window.location.href = redirectUrl;
+                        }
+                    };
+                    
+                    // Initialize and open Remita payment
+                    window.payWithRemita(paymentConfig);
+                };
+            })();
+        </script>
+    </template>
+</odoo>

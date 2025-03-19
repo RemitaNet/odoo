@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Payment Acquirer: Remita -->
+        <record id="payment_acquirer_form_remita" model="ir.ui.view">
+            <field name="name">payment.acquirer.form.remita</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.payment_acquirer_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//group[@name="acquirer"]' position='after'>
+                    <group attrs="{'invisible': [('provider', '!=', 'remita')]}">
+                        <field name="remita_merchant_id" attrs="{'required': [('provider', '=', 'remita'), ('state', '!=', 'disabled')]}"/>
+                        <field name="remita_api_key" attrs="{'required': [('provider', '=', 'remita'), ('state', '!=', 'disabled')]}"/>
+                        <field name="remita_service_type_id" attrs="{'required': [('provider', '=', 'remita'), ('state', '!=', 'disabled')]}"/>
+                        <field name="remita_mode" attrs="{'required': [('provider', '=', 'remita'), ('state', '!=', 'disabled')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
