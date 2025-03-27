@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_delete
-access_payment_acquirer_remita,payment.acquirer.remita,payment.model_payment_acquirer,base.group_user,1,1,1,1
-access_payment_transaction_remita,payment.transaction.remita,payment.model_payment_transaction,base.group_user,1,1,1,1

@@ -1,0 +1,37 @@
+<odoo>
+    <template id="payment_widget" name="Remita Payment Widget">
+        <html>
+            <head>
+                <script t-att-src="script_url" type="text/javascript"></script>
+            </head>
+            <body>
+                <div id="payment-form"
+                     t-att-data-remita-key="tx_values['key']"
+                     t-att-data-transaction-id="tx_values['transactionId']"
+                     t-att-data-customer-id="tx_values['customerId']"
+                     t-att-data-first-name="tx_values['firstName']"
+                     t-att-data-last-name="tx_values['lastName']"
+                     t-att-data-email="tx_values['email']"
+                     t-att-data-amount="tx_values['amount']"
+                     t-att-data-narration="tx_values['narration']"
+                     t-att-data-return-url="return_url">
+                </div>
+            </body>
+        </html>
+    </template>
+    <record id="view_payment_provider_remita_form" model="ir.ui.view">
+        <field name="name">payment.provider.remita.form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='provider_credentials']" position="inside">
+                <group name="remita" invisible="code != 'remita'">
+                    <group>
+                        <field name="remita_public_key" password="True"/>
+                        <field name="remita_mode"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
